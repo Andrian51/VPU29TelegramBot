@@ -22,7 +22,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     keyboard = [
         [KeyboardButton('/start'), KeyboardButton('/hello')],
         [KeyboardButton('/author'), KeyboardButton('/Bye')],
-        [KeyboardButton('Share location', request_location=True)]
+        [KeyboardButton('Share my location', request_location=True), KeyboardButton('Share my contact', request_contact=True)],
     ]
 
     reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
@@ -47,6 +47,19 @@ async def location(update: Update, context: ContextTypes.DEFEAULT_TYPE):
     await update.message.reply_text(f'lat = {lat}, lon = {lon}')
 
 
+async def contact(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.message.contact.user_id
+    first_name = update.message.contact.first_name
+    last_name = update.message.contact.last_name
+    await update.message.reply_text(
+        f"""        
+        user_id = {user_id}
+        first_name = {first_name}        
+        last_name = {last_name}
+        """
+    )
+
+
 app = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
 app.add_handler(CommandHandler("hello", hello))
@@ -54,8 +67,10 @@ app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("author", author))
 app.add_handler(CommandHandler("bye", Bye))
 
-location_hendler = (MessageHandler(filters.LOCATION, location))
-app.add_handler(location_hendler)
+location_handler = (MessageHandler(filters.LOCATION, location))
+app.add_handler(location_handler)
 
+contact_handler = MessageHandler(filters.CONTACT, contact)
+app.add_handler(contact_handler)
 
 app.run_polling()

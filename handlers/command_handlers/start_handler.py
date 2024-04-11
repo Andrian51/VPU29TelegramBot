@@ -14,6 +14,7 @@ class StartHandler(BaseHandler):
         keyboard = [
             [KeyboardButton('Share my location', request_location=True)],
             [KeyboardButton('Share my contact', request_contact=True)],
+            [KeyboardButton('Bye',)],
         ]
 
         reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)

@@ -20,6 +20,6 @@ class StartHandler(BaseHandler):
 
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text="Привіт Андріян",
+            text="Привіт Андріян і Богдан",
             reply_markup=reply_markup
         )
